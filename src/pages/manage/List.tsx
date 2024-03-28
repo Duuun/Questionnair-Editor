@@ -57,7 +57,7 @@ const List: FC = () => {
         })}
       </div>
 
-      <div className={styles.footer}>footer</div>
+      <div className={styles.footer}>List page footer</div>
     </>
   )
 }
