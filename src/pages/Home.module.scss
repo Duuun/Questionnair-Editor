@@ -1,0 +1,18 @@
+.container{
+    // 要加高度才能垂直也居中
+    height: calc(100vh - 64px - 65px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+
+    .info{
+        text-align: center;
+        Button{
+            height: 60px;
+            font-size: 24px;
+            border-radius: 3px;
+        }
+    }
+}

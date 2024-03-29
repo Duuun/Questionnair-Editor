@@ -1,13 +1,15 @@
 import React, { FC, useState } from 'react'
-import styles from './common.module.scss'
 import QuestionCard from '../../component/QuestionCard'
+import { useTitle } from 'ahooks'
+import { Typography } from 'antd'
+import styles from './common.module.scss'
 
 const rawQuestionList = [
   {
     _id: 'q1',
     title: '问卷1',
     isPublished: false,
-    isStar: false,
+    isStar: true,
     answerCount: 5,
     createAt: '3月10日 13.23',
   },
@@ -38,26 +40,30 @@ const rawQuestionList = [
 ]
 
 const List: FC = () => {
+  useTitle('Fundly问卷 - 我的问卷')
   const [questionList, setQuestionList] = useState(rawQuestionList)
+  const { Title } = Typography
 
   return (
     <>
+      {/* 头部 */}
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
         <div className={styles.right}>搜索</div>
       </div>
 
-      {/* 列表部分 */}
+      {/* 问卷列表部分 */}
       <div className={styles.contain}>
-        {questionList.map(q => {
-          const { _id } = q
-          return <QuestionCard key={_id} {...q} />
-        })}
+        {questionList.length > 0 &&
+          questionList.map(q => {
+            const { _id } = q
+            return <QuestionCard key={_id} {...q} />
+          })}
       </div>
 
-      <div className={styles.footer}>List page footer</div>
+      <div className={styles.footer}>load more footer：加载更多</div>
     </>
   )
 }
