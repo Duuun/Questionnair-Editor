@@ -5,6 +5,7 @@ import { Typography, Empty, Table, Tag, Space, Button, message, Modal } from 'an
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import styles from './common.module.scss'
+import ListSearch from '../../component/ListSearch'
 
 // 数据源
 const rawQuestionList = [
@@ -122,7 +123,9 @@ const Trash: FC = () => {
         <div className={styles.left}>
           <Title level={3}>回收站</Title>
         </div>
-        <div className={styles.right}>搜索</div>
+        <div className={styles.right}>
+          <ListSearch />
+        </div>
       </div>
 
       {/* 问卷列表部分 */}

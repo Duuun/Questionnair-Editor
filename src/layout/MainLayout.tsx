@@ -26,7 +26,7 @@ const MainLayout: FC = () => {
         </Content>
       </Layout>
 
-      <Footer className={styles.footer}>小慕问卷 &copy;2023-present. Created by Dunn</Footer>
+      <Footer className={styles.footer}>Fundly 问卷 &copy;2024-present. Created by Dunn</Footer>
     </Layout>
   )
 }

@@ -14,7 +14,7 @@ const Logo: FC = () => {
           <Title>
             <FormOutlined />
           </Title>
-          <Title>小慕问卷</Title>
+          <Title>Fundly 问卷</Title>
         </Space>
       </Link>
     </div>
