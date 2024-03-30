@@ -1,9 +1,12 @@
 import React, { FC, useEffect } from 'react'
 import styles from './Login.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button, Checkbox, Form, Input, Space, Typography } from 'antd'
+import { Button, Checkbox, Form, Input, Space, Typography, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
-import { REGISTER_PATHNAME } from '../router'
+import { REGISTER_PATHNAME, MANAGE_INDEX_PATHNAME } from '../router'
+import { loginService } from '../services/user'
+import { useRequest } from 'ahooks'
+import { setToken } from '../utils/user-token'
 
 // 记住/ 忘记 /拿到 账号密码函数
 const USERNAME_KEY = 'USERNAME'
@@ -37,11 +40,32 @@ const Login: FC = () => {
     form.setFieldsValue({ username, password })
   }, [])
 
+  // 登录的异步
+  const { run } = useRequest(
+    async value => {
+      const { username, password } = value
+      const data = await loginService(username, password)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        const { token = '' } = result
+        // 存token -》localStory
+        setToken(token)
+        message.success('登录成功')
+        nav(MANAGE_INDEX_PATHNAME) // 导航到“我的问卷”
+      },
+    }
+  )
+
   const onFinish = (value: any) => {
     console.log(value)
-    const { username, password, remember } = value
+    const { username, password, remember } = value || {}
 
-    if (value.remember) {
+    run(value) //执行ajax
+
+    if (remember) {
       console.log('记住')
       rememberUser(username, password)
     } else {

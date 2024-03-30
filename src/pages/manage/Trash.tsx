@@ -1,47 +1,16 @@
 import React, { FC, useState } from 'react'
 import QuestionCard from '../../component/QuestionCard'
-import { useTitle } from 'ahooks'
-import { Typography, Empty, Table, Tag, Space, Button, message, Modal } from 'antd'
+import { useTitle, useRequest } from 'ahooks'
+import { Typography, Empty, Table, Tag, Space, Button, message, Modal, Spin } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import useQuestionListData from '../../hooks/useLoadQuestionListData'
+import ListPage from '../../component/ListPage'
+import { updateQuestionService, deleteQuestionsService } from '../../services/question'
 
 import styles from './common.module.scss'
 import ListSearch from '../../component/ListSearch'
 
 // 数据源
-const rawQuestionList = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createAt: '3月10日 13:23',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: true,
-    isStar: false,
-    answerCount: 5,
-    createAt: '3月1日 13:23',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: false,
-    answerCount: 2,
-    createAt: '3月16日 12:23',
-  },
-  {
-    _id: 'q4',
-    title: '问卷4',
-    isPublished: true,
-    isStar: false,
-    answerCount: 7,
-    createAt: '4月1日 13:43',
-  },
-]
 
 // 属性
 const columns = [
@@ -70,22 +39,54 @@ const columns = [
 const Trash: FC = () => {
   useTitle('Fundly问卷 - 回收站')
 
+  const { data = {}, loading, refresh } = useQuestionListData({ isDeleted: true })
+  const { list = [], total = 0 } = data
+
   const { Title } = Typography
-  const [questionList, setQuestionList] = useState(rawQuestionList)
   // 记录选中的id
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
   // 弹框确定删除
   const { confirm } = Modal
 
-  // 确定删除函数
+  // 恢复问卷
+  const { run: recover } = useRequest(
+    async () => {
+      // 遍历数组执行异步函数
+      for await (const id of selectedIds) {
+        await updateQuestionService(id, { isDeleted: false })
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500, // 防抖
+      onSuccess() {
+        message.success('恢复成功')
+        refresh() // 手动刷新列表
+        setSelectedIds([])
+      },
+    }
+  )
+
+  // 删除
+  const { run: deleteQuestion } = useRequest(
+    async () => await deleteQuestionsService(selectedIds),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功')
+        refresh()
+        setSelectedIds([]) //重置选择的id
+      },
+    }
+  )
+
   function del() {
     confirm({
-      title: '确定删除该问卷？',
+      title: '确认彻底删除该问卷？',
       icon: <ExclamationCircleOutlined />,
-      // 再次提示
       content: '删除以后不可以找回',
-      onOk: () => message.warning(`删除 ${selectedIds}成功`),
+      onOk: deleteQuestion,
     })
   }
 
@@ -93,7 +94,7 @@ const Trash: FC = () => {
   const TableElem = (
     <>
       <Space style={{ marginBottom: '16px' }}>
-        <Button type="primary" disabled={selectedIds.length === 0}>
+        <Button type="primary" disabled={selectedIds.length === 0} onClick={recover}>
           恢复
         </Button>
 
@@ -102,7 +103,7 @@ const Trash: FC = () => {
         </Button>
       </Space>
       <Table
-        dataSource={questionList}
+        dataSource={list}
         columns={columns}
         pagination={false}
         rowKey={q => q._id}
@@ -130,12 +131,20 @@ const Trash: FC = () => {
 
       {/* 问卷列表部分 */}
       <div className={styles.contain}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        )}
 
-        {questionList.length > 0 && TableElem}
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
+
+        {list.length > 0 && TableElem}
       </div>
 
-      <div className={styles.footer}>Trash page footer：分页</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }

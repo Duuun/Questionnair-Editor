@@ -1,9 +1,10 @@
-import React, { FC } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { FC, useEffect, useState } from 'react'
+import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 
 const Edit: FC = () => {
-  const { id } = useParams()
-  return <p>Edit {id}</p>
+  const { loading, data } = useLoadQuestionData()
+
+  return <p>Edit </p>
 }
 
 export default Edit

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Typography } from 'antd'
 import { MANAGE_INDEX_PATHNAME } from '../router'
@@ -13,6 +13,12 @@ const Home: FC = () => {
   //     search: 'b=2',
   //   })
   // }
+
+  useEffect(() => {
+    fetch('/api/test')
+      .then(res => res.json)
+      .then(data => console.log('fetch data', data))
+  })
 
   const { Title, Paragraph } = Typography
 

@@ -1,43 +1,18 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import QuestionCard from '../../component/QuestionCard'
 import ListSearch from '../../component/ListSearch'
-
 import { useTitle } from 'ahooks'
-import { Typography, Empty } from 'antd'
-
+import { Typography, Empty, Spin, Pagination } from 'antd'
+import useQuestionListData from '../../hooks/useLoadQuestionListData'
+import ListPage from '../../component/ListPage'
 import styles from './common.module.scss'
-
-const rawQuestionList = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createAt: '3月10日 13.23',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createAt: '3月1日 13.23',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 2,
-    createAt: '3月16日 12.23',
-  },
-]
 
 const Star: FC = () => {
   useTitle('Fundly问卷 - 星标问卷')
 
-  const [questionList, setQuestionList] = useState(rawQuestionList)
+  const { data = {}, loading } = useQuestionListData({ isStar: true })
+  const { list = [], total = 0 } = data
+
   const { Title } = Typography
 
   return (
@@ -53,16 +28,23 @@ const Star: FC = () => {
 
       {/* 问卷列表部分 */}
       <div className={styles.contain}>
-        {questionList.length === 0 && <Empty description="暂无数据" />}
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin />
+          </div>
+        )}
+        {!loading && list.length === 0 && <Empty description="暂无数据" />}
 
-        {questionList.length > 0 &&
-          questionList.map(q => {
+        {list.length > 0 &&
+          list.map((q: any) => {
             const { _id } = q
             return <QuestionCard key={_id} {...q} />
           })}
       </div>
 
-      <div className={styles.footer}>Star page footer：分页</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }
