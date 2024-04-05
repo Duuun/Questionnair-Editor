@@ -1,0 +1,30 @@
+.canvas{
+    min-height: 100%;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.component-wrapper{
+    margin: 12px;
+    padding: 12px;
+    border-radius: 3px;
+    border: 1px solid #fff;
+
+    // &表示父级选择器,不加就给里面所有的都加边框，包括input还有文字
+    &:hover{
+        border-color: #d9d9d9;
+    }
+}
+
+.selected{
+    border-color: #1890ff !important;
+}
+
+.locked {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.component{
+    pointer-events: none;  //屏蔽鼠标行为，组件不让被点击到
+}

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Typography, Input } from 'antd'
+import { Typography } from 'antd'
 import { QuestionInputPropsType, QuestionInputDefaultProps } from './interface'
 
 const { Paragraph } = Typography
@@ -11,7 +11,7 @@ const QuestionInput: FC<QuestionInputPropsType> = (props: QuestionInputPropsType
     <div>
       <Paragraph strong>{title}</Paragraph>
       <div>
-        <Input placeholder={placeholder}></Input>
+        <input placeholder={placeholder}></input>
       </div>
     </div>
   )
