@@ -13,12 +13,14 @@
 .content {
     margin: 0 24px;
     display: flex;
-    height: 100%;
+    height: 88vh;
+   
 
     .left {
         width: 295px;
         background-color: #fff;
         padding: 0 12px;
+        overflow: auto;
     }
 
     .main {
@@ -28,8 +30,8 @@
 
         .canvas-wrapper {
             position: absolute;
-            width: 420px;
-            height: 612px;
+            width: 400px;
+            height: 552px;
             top: 50%;
             left: 50%;
             transform: translateX(-50%) translateY(-50%);

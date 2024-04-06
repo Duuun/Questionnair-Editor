@@ -19,9 +19,7 @@ const Edit: FC = () => {
 
   return (
     <div className={styles.container}>
-      <div style={{ backgroundColor: '#fff' }}>
-        <EditHeader />
-      </div>
+      <EditHeader />
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
           <div className={styles.left}>
@@ -30,11 +28,10 @@ const Edit: FC = () => {
           <div className={styles.main} onClick={clearSelectedId}>
             <div className={styles['canvas-wrapper']}>
               <EditCanvas loading={loading} />
-              <div style={{ height: '900px' }}>画布测试滚动</div>
             </div>
           </div>
           <div className={styles.right}>
-            <RightPanel />{' '}
+            <RightPanel />
           </div>
         </div>
       </div>

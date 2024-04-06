@@ -142,7 +142,7 @@ export const componentSlice = createSlice({
       insertNewComponent(draft, copiedComponent)
     }),
 
-    // 选中上一个
+    // 10. 选中上一个
     selectPrevComponent: produce((draft: ComponentsStateType) => {
       const { selectedId, componentList } = draft
       const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
@@ -153,7 +153,7 @@ export const componentSlice = createSlice({
       draft.selectedId = componentList[selectedIndex - 1].fe_id
     }),
 
-    // 选中下一个
+    // 11. 选中下一个
     selectNextComponent: produce((draft: ComponentsStateType) => {
       const { selectedId, componentList } = draft
       const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
@@ -164,7 +164,7 @@ export const componentSlice = createSlice({
       draft.selectedId = componentList[selectedIndex + 1].fe_id
     }),
 
-    // 修改组件标题
+    // 12. 修改组件标题
     changeComponentTitle: produce(
       (draft: ComponentsStateType, action: PayloadAction<{ fe_id: string; title: string }>) => {
         const { title, fe_id } = action.payload
@@ -173,7 +173,7 @@ export const componentSlice = createSlice({
       }
     ),
 
-    // 移动组件位置
+    // 13. 移动组件位置
     moveComponent: produce(
       (
         draft: ComponentsStateType,
