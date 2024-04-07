@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useState } from 'react'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import EditCanvas from './EditCanvas'
+import useGetPageInfo from '../../../hooks/useGetPageInfo'
+import { useTitle } from 'ahooks'
 
 import styles from './index.module.scss'
 import { useDispatch } from 'react-redux'
@@ -16,6 +18,10 @@ const Edit: FC = () => {
   function clearSelectedId() {
     dispatch(changeSelectedId(''))
   }
+
+  // 修改标题
+  const { title } = useGetPageInfo()
+  useTitle(`问卷编辑 - ${title}`)
 
   return (
     <div className={styles.container}>
